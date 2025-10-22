@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Weasley Family</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body data-page="dashboard">
+    <div class="container">
+        <h1>Dashboard</h1>
+        <div class="auth-bar" style="display:flex; gap:8px; align-items:center; justify-content:flex-end;">
+            <button id="logout-btn" class="btn btn-outline" style="display:none;">Logout</button>
+        </div>
+        <nav id="top-nav" class="top-nav" style="display:flex; gap:8px; margin:12px 0; flex-wrap:wrap;">
+            <a class="btn btn-outline" href="index.html">Home</a>
+            <a class="btn btn-outline" href="users.html">Users</a>
+            <a class="btn btn-outline" href="expenses.html">Expenses</a>
+            <a id="nav-savings-link" class="btn btn-outline" href="savings.html">Savings</a>
+            <a class="btn btn-outline" href="dashboard.html">Dashboard</a>
+            <a id="nav-admin-link" class="btn btn-outline" href="admin.html" style="display:none;">Admin</a>
+        </nav>
+
+        <section id="dashboard-section" class="dashboard">
+            <h3>Expense Dashboard</h3>
+            <div class="dashboard-summary">
+                <div class="summary-card">
+                    <h4>This Month</h4>
+                    <p id="dash-this-month">£0.00</p>
+                </div>
+                <div class="summary-card">
+                    <h4>Previous Month</h4>
+                    <p id="dash-prev-month">£0.00</p>
+                </div>
+                <div class="summary-card">
+                    <h4>Change</h4>
+                    <p id="dash-change">£0.00 (0%)</p>
+                </div>
+            </div>
+            <div class="dashboard-categories">
+                <h4>Category Comparison</h4>
+                <div id="dash-category-comparison" class="comparison-grid"></div>
+            </div>
+        </section>
+
+        <div id="auth-overlay" class="auth-overlay" style="display:none;">
+            <div class="auth-modal">
+                <h3>Login</h3>
+                <input type="text" id="username" placeholder="Username">
+                <input type="password" id="password" placeholder="Password">
+                <label style="display:flex; align-items:center; gap:6px; font-size:14px; color:#444;">
+                    <input type="checkbox" id="remember-me">
+                    Remember me (30 days)
+                </label>
+                <button id="login-btn">Login</button>
+                <p id="auth-error" class="auth-error"></p>
+            </div>
+        </div>
+    </div>
+    <script>window.API_BASE_URL = window.API_BASE_URL || 'https://weasley-expenses.onrender.com';</script>
+    <script src="script.js"></script>
+    <script src="page-bootstrap.js"></script>
+</body>
+</html>

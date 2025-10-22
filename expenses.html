@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses - Weasley Family</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body data-page="expenses">
+    <div class="container">
+        <h1>Expenses</h1>
+        <div class="auth-bar" style="display:flex; gap:8px; align-items:center; justify-content:flex-end;">
+            <button id="logout-btn" class="btn btn-outline" style="display:none;">Logout</button>
+        </div>
+        <nav id="top-nav" class="top-nav" style="display:flex; gap:8px; margin:12px 0; flex-wrap:wrap;">
+            <a class="btn btn-outline" href="index.html">Home</a>
+            <a class="btn btn-outline" href="users.html">Users</a>
+            <a class="btn btn-outline" href="expenses.html">Expenses</a>
+            <a id="nav-savings-link" class="btn btn-outline" href="savings.html">Savings</a>
+            <a class="btn btn-outline" href="dashboard.html">Dashboard</a>
+            <a id="nav-admin-link" class="btn btn-outline" href="admin.html" style="display:none;">Admin</a>
+        </nav>
+
+        <div class="month-selector">
+            <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+            <h2 id="current-month">January 2023</h2>
+            <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+        <div class="balance-section">
+            <div class="balance-input">
+                <label for="starting-balance">Starting Balance:</label>
+                <input type="number" id="starting-balance" placeholder="Enter starting balance" min="0" step="0.01">
+                <button id="save-balance">Save</button>
+            </div>
+            <div class="balance-display">
+                <div class="balance-card">
+                    <h3>Starting Balance</h3>
+                    <p id="display-starting-balance">£0.00</p>
+                </div>
+                <div class="balance-card">
+                    <h3>Current Balance</h3>
+                    <p id="current-balance">£0.00</p>
+                </div>
+            </div>
+            <div class="sync-controls">
+                <button id="export-data" class="sync-btn"><i class="fas fa-download"></i> Export Data</button>
+                <button id="import-data" class="sync-btn"><i class="fas fa-upload"></i> Import Data</button>
+                <input type="file" id="import-file" accept=".json,.csv" style="display: none;">
+                <span id="last-sync" class="sync-info"></span>
+            </div>
+        </div>
+
+        <div class="expense-input">
+            <input type="text" id="expense-description" placeholder="What did you spend on?">
+            <input type="number" id="expense-amount" placeholder="Amount" min="0" step="0.01">
+            <input type="date" id="expense-date">
+            <select id="expense-category">
+                <option value="food">Food</option>
+                <option value="utilities">Utilities</option>
+                <option value="rent">Rent</option>
+                <option value="groceries">Groceries</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="transportation">Transportation</option>
+                <option value="credit-card">Credit Card</option>
+                <option value="installments">Installments</option>
+                <option value="apartment-installment">Apartment Installment</option>
+                <option value="other">Other</option>
+            </select>
+            <select id="expense-payer">
+                <option value="you">You</option>
+                <option value="spouse">Spouse</option>
+            </select>
+            <input type="file" id="expense-receipt" accept="image/*,application/pdf" title="Attach receipt (image or PDF)" style="display:none;">
+            <label for="expense-receipt" id="expense-receipt-label" class="btn btn-outline">Attach Receipt</label>
+            <button id="toggle-itemized" class="btn btn-secondary" type="button">Add Itemized Details</button>
+            <div id="itemized-container" class="itemized" style="display:none;">
+                <div class="item-row">
+                    <input type="text" class="item-name" placeholder="Item name">
+                    <input type="number" class="item-amount" placeholder="Amount" min="0" step="0.01">
+                    <button class="remove-item btn btn-outline btn-sm" type="button">Remove</button>
+                </div>
+                <button id="add-item-row" class="btn btn-outline" type="button">Add Item</button>
+            </div>
+            <button id="add-expense" class="btn btn-primary">Add Expense</button>
+        </div>
+
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="you">Your Expenses</button>
+            <button class="filter-btn" data-filter="spouse">Spouse Expenses</button>
+            <button class="filter-btn" data-filter="food">Food</button>
+            <button class="filter-btn" data-filter="utilities">Utilities</button>
+            <button class="filter-btn" data-filter="rent">Rent</button>
+            <button class="filter-btn" data-filter="groceries">Groceries</button>
+            <button class="filter-btn" data-filter="entertainment">Entertainment</button>
+            <button class="filter-btn" data-filter="transportation">Transportation</button>
+            <button class="filter-btn" data-filter="credit-card">Credit Card</button>
+            <button class="filter-btn" data-filter="installments">Installments</button>
+            <button class="filter-btn" data-filter="apartment-installment">Apartment</button>
+            <button class="filter-btn" data-filter="other">Other</button>
+        </div>
+
+        <div class="summary-container">
+            <div class="summary-card">
+                <h3>Total Expenses</h3>
+                <p id="total-amount">£0.00</p>
+            </div>
+            <div class="summary-card">
+                <h3>Your Expenses</h3>
+                <p id="your-amount">£0.00</p>
+            </div>
+            <div class="summary-card">
+                <h3>Spouse Expenses</h3>
+                <p id="spouse-amount">£0.00</p>
+            </div>
+        </div>
+
+        <div class="category-summary">
+            <h3>Category Totals</h3>
+            <div class="category-grid" id="category-totals"></div>
+        </div>
+
+        <div class="expenses-container">
+            <h3>Expenses</h3>
+            <ul id="expense-list"></ul>
+        </div>
+
+        <div class="app-footer">
+            <span id="expenses-counter">0 expenses this month</span>
+            <button id="clear-all" class="btn btn-outline">Clear All</button>
+        </div>
+
+        <div id="auth-overlay" class="auth-overlay" style="display:none;">
+            <div class="auth-modal">
+                <h3>Login</h3>
+                <input type="text" id="username" placeholder="Username">
+                <input type="password" id="password" placeholder="Password">
+                <label style="display:flex; align-items:center; gap:6px; font-size:14px; color:#444;">
+                    <input type="checkbox" id="remember-me">
+                    Remember me (30 days)
+                </label>
+                <button id="login-btn">Login</button>
+                <p id="auth-error" class="auth-error"></p>
+            </div>
+        </div>
+    <script>window.API_BASE_URL = window.API_BASE_URL || 'https://weasley-expenses.onrender.com';</script>
+    <script src="script.js"></script>
+    <script src="page-bootstrap.js"></script>
+</body>
+</html>
